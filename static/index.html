@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+</head>
+<body>
+    <form id="form-urlshortener">
+        <label>Put your url here</label>
+        <input id="longUrl" placeholder="Your url" size="100" autocomplete="off">
+        <button id="btn" type="submit">Shorten</button>
+    </form>
+    <br>
+    <div id="shortUrl"></div>
+
+    <script>
+        var form = document.getElementById("form-urlshortener");
+        form.addEventListener("submit", shorten);
+        
+        function shorten(e) {
+            var longUrl = document.getElementById("longUrl").value;
+            var shortUrl = document.getElementById("shortUrl");
+            e.preventDefault();
+
+            fetch('api/url/shorten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    longUrl
+                })
+            })
+            .then((res) => {
+                if (res.ok)
+                    return res.json();
+                else if (res.status == 401) {
+                    throw Error("Invalid long Url!");
+                }
+                else if (res.status == 500) {
+                    throw Error("Server error");
+                }
+            })
+            .then ((data) => {
+                shortUrl.innerHTML = "Your shortened link is: ";
+                shortUrl.innerHTML += `<a href="${data.shortUrl}">${data.shortUrl}</a>`;
+            })
+            .catch((err) => {
+                alert(err);
+            })
+        }
+    </script>
+</body>
+</html>
