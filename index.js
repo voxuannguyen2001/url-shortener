@@ -15,6 +15,5 @@ app.use('/', express.static(__dirname + '/static'));
 app.use('/', require('./routes/index'));
 app.use('/api/url', require('./routes/url'));
 
-const PORT = 5000;
 
-app.listen(PORT, () => {console.log(`Server running on port ${PORT}`)});
+app.listen(process.env.PORT || 5000, () => {console.log(`Server running on port ${PORT}`)});
