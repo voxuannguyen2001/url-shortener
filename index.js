@@ -16,4 +16,4 @@ app.use('/', require('./routes/index'));
 app.use('/api/url', require('./routes/url'));
 
 
-app.listen(process.env.PORT || 5000, () => {console.log(`Server running on port ${PORT}`)});
+var listener = app.listen((process.env.PORT || 5000), () => {console.log(`Server running on ${listener.address().port}}`)});
